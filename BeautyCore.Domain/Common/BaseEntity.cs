@@ -1,41 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BeautyCore.Domain.Common
+﻿namespace BeautyCore.Domain.Common
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity : IAudit, ISoftDelete
     {
         public Guid Id { get; private set; } = Guid.NewGuid();
 
-        // Audit
+        // Audit Properties
         public DateTime CreatedAtUtc { get; private set; } = DateTime.UtcNow;
-        public string? CreatedBy { get; private set; }
+        public Guid? CreatedBy { get; private set; }
 
         public DateTime? LastModifiedAtUtc { get; private set; }
-        public string? LastModifiedBy { get; private set; }
+        public Guid? LastModifiedBy { get; private set; }
 
-        // Soft delete
+        // Soft Delete Properties
         public bool IsDeleted { get; private set; }
         public DateTime? DeletedAtUtc { get; private set; }
-        public string? DeletedBy { get; private set; }
+        public Guid? DeletedBy { get; private set; }
 
-        // Domain methods (setter yerine kontrollü güncelleme)
-        public void SetCreated(string? userId)
+        // IAudit Implementation (İsimler SetCreated/SetModified olarak güncellendi)
+        public void SetCreated(Guid? userId)
         {
             CreatedBy = userId;
             CreatedAtUtc = DateTime.UtcNow;
         }
 
-        public void SetModified(string? userId)
+        public void SetModified(Guid? userId)
         {
             LastModifiedBy = userId;
             LastModifiedAtUtc = DateTime.UtcNow;
         }
 
-        public void SoftDelete(string? userId)
+        // ISoftDelete Implementation
+        public void SoftDelete(Guid? userId)
         {
             if (IsDeleted) return;
 
@@ -46,6 +41,8 @@ namespace BeautyCore.Domain.Common
 
         public void Restore()
         {
+            if (!IsDeleted) return;
+
             IsDeleted = false;
             DeletedBy = null;
             DeletedAtUtc = null;

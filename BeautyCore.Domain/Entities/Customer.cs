@@ -9,6 +9,8 @@ namespace BeautyCore.Domain.Entities
 {
     public class Customer : BaseEntity
     {
+        public Guid BranchId { get; set; }
+        public Branch Branch { get; set; } = null!;
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

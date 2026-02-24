@@ -16,7 +16,9 @@ namespace BeautyCore.Domain.Entities
 
         public Guid BranchId { get; set; }
         public Branch Branch { get; set; } = null!;
-
+        // Many-to-many
         public ICollection<Staff> Staffs { get; set; } = new List<Staff>();
+        // Bu hizmetin randevuları
+        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

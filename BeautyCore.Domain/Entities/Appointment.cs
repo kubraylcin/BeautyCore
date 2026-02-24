@@ -10,7 +10,8 @@ namespace BeautyCore.Domain.Entities
 {
     public class Appointment : BaseEntity
     {
-        public DateTime ScheduledDate { get; set; }
+        public DateTime StartAtUtc { get; set; }
+        public DateTime EndAtUtc { get; set; }
         public AppointmentStatus Status { get; set; } = AppointmentStatus.Pending;
         public string? Note { get; set; }
         public decimal TotalPrice { get; set; }

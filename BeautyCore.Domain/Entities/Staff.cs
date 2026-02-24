@@ -16,8 +16,9 @@ namespace BeautyCore.Domain.Entities
         public ImageFile? ProfilePicture { get; set; }
         public Guid BranchId { get; set; }
         public Branch Branch { get; set; } = null!;
+        // Many-to-many
         public ICollection<Service> Services { get; set; } = new List<Service>();
         public ICollection<StaffWorkingHour> WorkingHours { get; set; } = new List<StaffWorkingHour>();
-
+        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }
