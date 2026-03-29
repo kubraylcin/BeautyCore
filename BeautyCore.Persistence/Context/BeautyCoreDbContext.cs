@@ -32,7 +32,13 @@ namespace BeautyCore.Persistence.Context
             // ✅ SQL Server "multiple cascade paths" hatası için: tüm FK'lerde cascade kapat
             foreach (var fk in modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetForeignKeys()))
             {
-                fk.DeleteBehavior = DeleteBehavior.Restrict; // veya NoAction
+                // Sadece varsayılan olarak "Cascade" gelenleri Restrict yap.
+                // Benim özel olarak "SetNull" dediklerime DOKUNMA.
+                if (fk.DeleteBehavior == DeleteBehavior.Cascade)
+                {
+                    fk.DeleteBehavior = DeleteBehavior.Restrict; // veya NoAction
+                }
+                    
             }
 
             // ✅ Soft delete filter (senin mevcut loop burada kalabilir)

@@ -164,11 +164,13 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -181,17 +183,22 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Customers");
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.Identity.AppRole", b =>
@@ -442,21 +449,24 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Notifications");
+                    b.ToTable("Notifications", (string)null);
                 });
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.Payment", b =>
@@ -466,6 +476,7 @@ namespace BeautyCore.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("AppointmentId")
@@ -479,7 +490,10 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.Property<string>("Currency")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)")
+                        .HasDefaultValue("TRY");
 
                     b.Property<DateTime?>("DeletedAtUtc")
                         .HasColumnType("datetime2");
@@ -503,14 +517,15 @@ namespace BeautyCore.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TransactionReference")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppointmentId")
                         .IsUnique();
 
-                    b.ToTable("Payments");
+                    b.ToTable("Paynets", (string)null);
                 });
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.Promotion", b =>
@@ -582,7 +597,8 @@ namespace BeautyCore.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
@@ -618,7 +634,7 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.Service", b =>
@@ -643,7 +659,8 @@ namespace BeautyCore.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("DurationMinutes")
                         .HasColumnType("int");
@@ -659,16 +676,18 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Services");
+                    b.ToTable("Services", (string)null);
                 });
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.Staff", b =>
@@ -694,7 +713,8 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -707,14 +727,16 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<Guid?>("ProfilePictureId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
@@ -722,7 +744,7 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.HasIndex("ProfilePictureId");
 
-                    b.ToTable("Staffs");
+                    b.ToTable("StaffMembers", (string)null);
                 });
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.StaffWorkingHour", b =>
@@ -892,7 +914,7 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.HasIndex("StaffsId");
 
-                    b.ToTable("ServiceStaff");
+                    b.ToTable("StaffServices", (string)null);
                 });
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.Appointment", b =>
@@ -912,7 +934,7 @@ namespace BeautyCore.Persistence.Migrations
                     b.HasOne("BeautyCore.Domain.Entities.Promotion", "Promotion")
                         .WithMany()
                         .HasForeignKey("PromotionId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("BeautyCore.Domain.Entities.Service", "Service")
                         .WithMany("Appointments")
@@ -985,8 +1007,7 @@ namespace BeautyCore.Persistence.Migrations
                 {
                     b.HasOne("BeautyCore.Domain.Entities.Branch", null)
                         .WithMany("BranchPromotions")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("BranchId");
                 });
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.Review", b =>
@@ -1029,8 +1050,7 @@ namespace BeautyCore.Persistence.Migrations
 
                     b.HasOne("BeautyCore.Domain.Entities.ImageFile", "ProfilePicture")
                         .WithMany()
-                        .HasForeignKey("ProfilePictureId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ProfilePictureId");
 
                     b.Navigation("Branch");
 
