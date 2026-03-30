@@ -1,4 +1,6 @@
+using BeautyCore.Application;
 using BeautyCore.Domain.Entities.Identity;
+using BeautyCore.Domain.Interfaces;
 using BeautyCore.Persistence.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -11,7 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BeautyCoreDbContext>(options =>
     options.UseSqlServer(connectionString));
-
+builder.Services.AddScoped<IApplicationDbContext>(provider =>
+    provider.GetRequiredService<BeautyCoreDbContext>());
 // 2. Identity Ayarlarý
 builder.Services.AddIdentity<AppUser, AppRole>(options =>
 {
@@ -51,7 +54,7 @@ builder.Services.AddSwaggerGen(setup =>
         { jwtSecurityScheme, Array.Empty<string>() }
     });
 });
-
+builder.Services.AddApplicationServices();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

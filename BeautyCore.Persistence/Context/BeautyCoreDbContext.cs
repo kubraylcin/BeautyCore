@@ -1,13 +1,14 @@
 ﻿using BeautyCore.Domain.Common;
 using BeautyCore.Domain.Entities;
 using BeautyCore.Domain.Entities.Identity;
+using BeautyCore.Domain.Interfaces;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace BeautyCore.Persistence.Context
 {
-    public sealed class BeautyCoreDbContext : IdentityDbContext<AppUser, AppRole, Guid>
+    public sealed class BeautyCoreDbContext : IdentityDbContext<AppUser, AppRole, Guid>, IApplicationDbContext
     {
         public BeautyCoreDbContext(DbContextOptions<BeautyCoreDbContext> options) : base(options) { }
 
@@ -78,18 +79,36 @@ namespace BeautyCore.Persistence.Context
 
             foreach (var entry in ChangeTracker.Entries())
             {
-                if (entry.State == EntityState.Deleted && entry.Entity is ISoftDelete sd)
+                // 1. YENİ KAYIT EKLEME
+                if (entry.State == EntityState.Added)
                 {
-                    entry.State = EntityState.Modified;
-                    sd.SoftDelete(userId);
+                    if (entry.Entity is IAudit audit)
+                    {
+                        audit.SetCreated(userId);
+                    }
+
+                    // EN KRİTİK NOKTA: Yeni kaydın silinmiş olma ihtimalini sıfırlıyoruz
+                    if (entry.Entity is BaseEntity baseEnt)
+                    {
+                        baseEnt.Restore(); // IsDeleted'ı false yapar
+                    }
                 }
 
-                if (entry.Entity is IAudit audit)
+                // 2. GÜNCELLEME
+                else if (entry.State == EntityState.Modified)
                 {
-                    if (entry.State == EntityState.Added)
-                        audit.SetCreated(userId);
-                    else if (entry.State == EntityState.Modified)
+                    if (entry.Entity is IAudit audit)
+                    {
                         audit.SetModified(userId);
+                    }
+                }
+
+                // 3. SİLME (SOFT DELETE)
+                else if (entry.State == EntityState.Deleted && entry.Entity is ISoftDelete sd)
+                {
+                    // Silme komutunu güncelleme komutuna çeviriyoruz
+                    entry.State = EntityState.Modified;
+                    sd.SoftDelete(userId);
                 }
             }
         }
