@@ -144,7 +144,7 @@ namespace BeautyCore.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("BranchId")
+                    b.Property<Guid?>("BranchId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAtUtc")
@@ -961,13 +961,9 @@ namespace BeautyCore.Persistence.Migrations
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.Customer", b =>
                 {
-                    b.HasOne("BeautyCore.Domain.Entities.Branch", "Branch")
+                    b.HasOne("BeautyCore.Domain.Entities.Branch", null)
                         .WithMany("Customers")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
+                        .HasForeignKey("BranchId");
                 });
 
             modelBuilder.Entity("BeautyCore.Domain.Entities.Identity.AppUser", b =>

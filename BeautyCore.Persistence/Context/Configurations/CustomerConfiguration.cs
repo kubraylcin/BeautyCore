@@ -20,11 +20,6 @@ namespace BeautyCore.Persistence.Context.Configurations
             builder.Property(x=>x.PhoneNumber).HasMaxLength(20);
 
             builder.HasIndex(x => x.Email).IsUnique();
-
-            builder.HasOne(x=>x.Branch)
-                .WithMany(x=>x.Customers)
-                .HasForeignKey(x=>x.BranchId)
-                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -9,6 +9,7 @@ namespace BeautyCore.Application.Features.Services.Queries.GetAllServices
 {
     public record GetAllServicesQuery(): IRequest<List<ServiceResponse>>;
     public record ServiceResponse(
+        Guid Id,
         string Name,
         string Description,
         decimal Price,

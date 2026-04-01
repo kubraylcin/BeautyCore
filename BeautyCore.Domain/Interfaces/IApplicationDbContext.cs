@@ -13,6 +13,8 @@ namespace BeautyCore.Domain.Interfaces
         DbSet<Branch> Branches { get; }
         DbSet<Staff> Staffs { get; }
         DbSet<Service> Services { get; }
+        DbSet<Customer> Customers { get; }
+        DbSet<Appointment> Appointments { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

@@ -23,6 +23,7 @@ namespace BeautyCore.Application.Features.Services.Queries.GetAllServices
             return await _context.Services
                 .AsNoTracking()
                 .Select(b=>new ServiceResponse(
+                    b.Id,
                     b.Name,
                     b.Description,
                     b.Price,
