@@ -2,6 +2,7 @@ using BeautyCore.Application;
 using BeautyCore.Domain.Entities.Identity;
 using BeautyCore.Domain.Interfaces;
 using BeautyCore.Persistence.Context;
+using BeautyCore.Presentation.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -56,7 +57,7 @@ builder.Services.AddSwaggerGen(setup =>
 });
 builder.Services.AddApplicationServices();
 var app = builder.Build();
-
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
