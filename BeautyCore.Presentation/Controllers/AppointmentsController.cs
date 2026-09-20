@@ -22,11 +22,13 @@ namespace BeautyCore.Presentation.Controllers
         }
 
         [HttpPatch("{appointmentId}/status")]
-        public async Task<IActionResult> UpdateStatus(Guid appointmentId, [FromBody] AppointmentStatus status)
-            {
-            var command = new UpdateAppointmentStatusCommand(appointmentId,status);
+        public async Task<IActionResult> UpdateStatus(Guid appointmentId, [FromBody] UpdateAppointmentStatusRequest request)
+        {
+            var command = new UpdateAppointmentStatusCommand(appointmentId, request.Status);
             var result = await Mediator.Send(command);
             return Ok(result);
         }
     }
+
+    public record UpdateAppointmentStatusRequest(AppointmentStatus Status);
 }
