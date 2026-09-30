@@ -1,4 +1,5 @@
 ﻿using BeautyCore.Application.Features.Appointments.Commands;
+using BeautyCore.Application.Features.Appointments.Commands.RescheduleAppointment;
 using BeautyCore.Application.Features.Appointments.Commands.UpdateAppointmentStatus;
 using BeautyCore.Application.Features.Appointments.Queries.GetAppointmentsByBranch;
 using BeautyCore.Domain.Enums;
@@ -27,6 +28,18 @@ namespace BeautyCore.Presentation.Controllers
             var command = new UpdateAppointmentStatusCommand(appointmentId, request.Status);
             var result = await Mediator.Send(command);
             return Ok(result);
+        }
+
+        public record RescheduleAppointmentRequest(DateTime NewStartAtUtc);
+
+        [HttpPatch("{id:guid}/reschedule")]
+        public async Task<IActionResult> Reschedule(
+            [FromRoute] Guid id,
+            [FromBody] RescheduleAppointmentRequest request)
+        {
+            var command = new RescheduleAppointmentCommand(id, request.NewStartAtUtc);
+            var result = await Mediator.Send(command);
+            return Ok(new { success = result, message = "Randevu saati başarıyla güncellendi." });
         }
     }
 
