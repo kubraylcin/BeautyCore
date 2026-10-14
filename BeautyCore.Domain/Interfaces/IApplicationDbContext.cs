@@ -15,6 +15,7 @@ namespace BeautyCore.Domain.Interfaces
         DbSet<Service> Services { get; }
         DbSet<Customer> Customers { get; }
         DbSet<Appointment> Appointments { get; }
+        DbSet<Payment> Payments { get; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
         DbSet<StaffWorkingHour> StaffWorkingHours { get; }
     }
