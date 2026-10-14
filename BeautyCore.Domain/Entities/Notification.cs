@@ -15,6 +15,6 @@ namespace BeautyCore.Domain.Entities
         public string Title { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
         public bool IsRead { get; set; } = false;
-        public string Type { get; set; } // SMS, Email, InApp
+        public string Type { get; set; } = string.Empty; // SMS, Email, InApp
     }
 }
